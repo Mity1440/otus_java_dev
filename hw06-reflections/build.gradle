@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow'
+}
+
+group 'ru.otus'
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation ('org.junit.jupiter:junit-jupiter-api')
+    testImplementation ('org.junit.jupiter:junit-jupiter-engine')
+    testImplementation ('org.assertj:assertj-core')
+    testImplementation ('org.mockito:mockito-core')
+    testImplementation ('org.mockito:mockito-junit-jupiter')
+}
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    archiveBaseName.set('hw06-reflection')
+    archiveVersion.set('0.1')
+    archiveClassifier.set('')
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
+
+compileJava.options.encoding = 'UTF-8'
