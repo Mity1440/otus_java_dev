@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-public class CustomLogger {
+public class CustomLogger implements Logger{
 
     private final PrintStream out;
 
@@ -12,6 +12,7 @@ public class CustomLogger {
         this.out = System.out;
     }
 
+    @Override
     public void log(Method method, Object[] args){
         this.out.println("executed method: "
                            + method.getName()

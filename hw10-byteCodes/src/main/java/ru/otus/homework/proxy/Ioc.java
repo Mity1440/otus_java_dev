@@ -1,6 +1,7 @@
 package ru.otus.homework.proxy;
 
 import ru.otus.homework.core.CustomLogger;
+import ru.otus.homework.core.Logger;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
@@ -16,12 +17,12 @@ public class Ioc {
     private Ioc() {
     }
 
-    public static Object getDecaratedClass(Object o, Class<? extends Annotation> annotation) {
+    public static Object getDecaratedClass(Object o, Class<? extends Annotation> annotation, Logger logger) {
 
-        InvocationHandler handler = new CustomInvocationHandler(o, annotation);
+        InvocationHandler handler = new CustomInvocationHandler(o, annotation, logger);
 
-        Class clazz = o.getClass();
-        Class[] clazzInterfaces = clazz.getInterfaces();
+        Class<?> clazz = o.getClass();
+        Class<?>[] clazzInterfaces = clazz.getInterfaces();
 
         return Proxy.newProxyInstance(o.getClass().getClassLoader(),
                                       clazzInterfaces,
@@ -32,25 +33,21 @@ public class Ioc {
 
         private final Object clazz;
         private final Set<String> annotatedMethods;
-        private final CustomLogger logger;
+        private final Logger logger;
 
 
-        CustomInvocationHandler(Object myClass, Class<? extends Annotation> annotation) {
+        CustomInvocationHandler(Object myClass,
+                                Class<? extends Annotation> annotation,
+                                Logger logger) {
 
             this.clazz = myClass;
+            this.logger = logger;
 
-            logger = new CustomLogger();
-
-            annotatedMethods =
-            Arrays
-                .stream(myClass.getClass().getDeclaredMethods())
-                    .map(o->{
-                        if (o.isAnnotationPresent(annotation)){
-                            return getSignature(o);
-                        }
-                        return null;})
-                           .filter(Objects::nonNull)
-                              .collect(Collectors.toSet());
+            annotatedMethods = Arrays
+                    .stream(myClass.getClass().getDeclaredMethods())
+                    .filter(o -> o.isAnnotationPresent(annotation))
+                    .map(this::getSignature)
+                    .collect(Collectors.toSet());
 
         }
 
@@ -73,20 +70,7 @@ public class Ioc {
         }
 
         private String getSignature(Method method){
-
-            StringBuilder sb = new StringBuilder();
-            sb.append(method.getName());
-            sb.append("_");
-
-            Arrays
-               .stream(method.getParameters())
-                    .forEach(o->{
-                        sb.append(o.getParameterizedType());
-                        sb.append("_");
-                    });
-
-            return sb.toString();
-
+            return method.getName() + Arrays.toString(method.getParameters());
         }
 
     }

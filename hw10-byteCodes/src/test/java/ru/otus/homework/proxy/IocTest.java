@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import ru.otus.homework.annotations.Log;
 import ru.otus.homework.core.Calculatable;
 import ru.otus.homework.core.CalculatableImpl;
+import ru.otus.homework.core.CustomLogger;
+import ru.otus.homework.core.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -28,8 +30,10 @@ class IocTest {
                                                 + EOL
                                                 + "calculate(int a, int b): a + b = 4"
                                                 + EOL;
+
     private PrintStream backup;
     private ByteArrayOutputStream bos;
+
 
     @BeforeEach
     void setUp() {
@@ -48,9 +52,11 @@ class IocTest {
     @Test
     void shouldPrintMethodWithoutParams(){
 
-        var CalculatableImpl = new CalculatableImpl();
-        var CalculatableImplProxy = (Calculatable)Ioc.getDecaratedClass(CalculatableImpl, Log.class);
-        CalculatableImplProxy.calculate();
+        Logger customLogger = new CustomLogger();
+
+        var calculatable = new CalculatableImpl();
+        var calculatableProxy = (Calculatable)Ioc.getDecaratedClass(calculatable, Log.class, customLogger);
+        calculatableProxy.calculate();
         assertThat(bos.toString()).isEqualTo(TEXT_TO_PRINT1);
 
     }
@@ -59,9 +65,11 @@ class IocTest {
     @Test
     void shouldPrintMethodWithParams(){
 
-        var CalculatableImpl = new CalculatableImpl();
-        var CalculatableImplProxy = (Calculatable)Ioc.getDecaratedClass(CalculatableImpl, Log.class);
-        CalculatableImplProxy.calculate(1, 3);
+        Logger customLogger = new CustomLogger();
+
+        var calculatable = new CalculatableImpl();
+        var calculatableProxy = (Calculatable)Ioc.getDecaratedClass(calculatable, Log.class, customLogger);
+        calculatableProxy.calculate(1, 3);
         assertThat(bos.toString()).isEqualTo(TEXT_TO_PRINT2);
 
     }
