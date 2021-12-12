@@ -13,4 +13,5 @@ include 'hw02-generics'
 include 'hw06-reflections'
 include 'hw08-gc'
 include 'hw10-byteCodes'
+include 'hw15-structuralPatterns'
 
