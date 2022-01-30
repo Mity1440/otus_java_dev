@@ -38,7 +38,7 @@ public class DbServiceClientWithCasheImpl extends DbServiceClientImpl{
                 clientDataTemplate.update(session, clientCloned);
                 log.info("updated client: {}", clientCloned);
             }
-            cashe.put(clientCloned.getId(), clientCloned);
+            cashe.remove(clientCloned.getId());
             return clientCloned;
         });
     }
@@ -46,12 +46,19 @@ public class DbServiceClientWithCasheImpl extends DbServiceClientImpl{
     @Override
     public Optional<Client> getClient(long id) {
         return transactionManager.doInReadOnlyTransaction(session -> {
-            var clientOptional = Optional.ofNullable(cashe.get(id));
-            if (!clientOptional.isPresent()){
-                clientOptional = clientDataTemplate.findById(session, id);
+
+            var cashedClient = cashe.get(id);
+            if (cashedClient == null){
+                cashedClient = clientDataTemplate.findById(session, id).get();
             }
+            cashe.put(id, cashedClient);
+
+            var clientOptional = Optional.ofNullable(cashedClient);
+
             log.info("client: {}", clientOptional);
+
             return clientOptional;
+
         });
     }
 
