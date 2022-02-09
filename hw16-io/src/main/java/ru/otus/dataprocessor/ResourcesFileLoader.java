@@ -1,9 +1,8 @@
 package ru.otus.dataprocessor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.otus.model.Measurement;
+import ru.otus.security.model.Measurement;
 
 import java.io.*;
 import java.net.URL;
