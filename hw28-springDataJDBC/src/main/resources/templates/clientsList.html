@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all clients</title>
+
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .clients, .clients td {
+            border: 1px solid lightgray;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: block;
+        }
+
+        input {
+            width: 150px;
+        }
+
+
+        select {
+            width: 154px;
+        }
+
+        button {
+            width: 250px;
+        }
+
+        h3 {
+            background-image: url("../static/listmark.png");
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        .create-form {
+            background:#eeeeee;
+            border:1px solid #cccccc;
+            padding:5px 10px;
+            height: 25%;
+            width: 25%;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<br/><br/>
+
+<h3>Добавить нового клиента</h3>
+
+<form id="create-form" th:action="@{/client/save}" th:object="${client}" th:method="post" accept-charset="utf-8">
+    <div class="create-form">
+
+        <div class="row">
+            <label for="ClientName">Name:</label>
+            <input id="clientName" name="name" type="text" th:value="*{name}" value="John Doe"/>
+        </div>
+
+        <div class="row">
+            <label for="Address">Address:</label>
+            <input id="address" name="address" type="text" th:value="*{address}" value="null address"/>
+        </div>
+
+        <div class="row">
+            <label for="Phones">Phones:</label>
+            <input id="phones" name="phones" type="text" th:value="*{phones}" value="null phone"/>
+        </div>
+
+        <div class="row">
+            <button type="submit">Save</button>
+        </div>
+
+    </div>
+</form>
+
+<h3>Все клиенты:</h3>
+
+<table class="clients">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phone</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.getName()}">John Doe</td>
+        <td th:text="${client.getAddress()}">null street</td>
+        <td th:text="${client.getPhones()}">794250</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
