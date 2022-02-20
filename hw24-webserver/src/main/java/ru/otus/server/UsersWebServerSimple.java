@@ -73,7 +73,7 @@ public class UsersWebServerSimple implements UsersWebServer {
     private ServletContextHandler createServletContextHandler() {
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         servletContextHandler.addServlet(new ServletHolder(new ClientsServlet(templateProcessor, dbServiceClient)), "/clients");
-        servletContextHandler.addServlet(new ServletHolder(new ClientApiServlet(templateProcessor, dbServiceClient)), "/api/client/*");
+        servletContextHandler.addServlet(new ServletHolder(new ClientApiServlet(dbServiceClient)), "/api/client/*");
         return servletContextHandler;
     }
 }

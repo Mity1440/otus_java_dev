@@ -16,14 +16,10 @@ import java.util.List;
 
 public class ClientApiServlet extends HttpServlet{
 
-    private final TemplateProcessor templateProcessor;
     private final DBServiceClient dbServiceClient;
 
-    public ClientApiServlet(TemplateProcessor templateProcessor, DBServiceClient dbServiceClient) {
-
-        this.templateProcessor = templateProcessor;
+    public ClientApiServlet(DBServiceClient dbServiceClient) {
         this.dbServiceClient = dbServiceClient;
-
     }
 
     @Override
@@ -36,19 +32,21 @@ public class ClientApiServlet extends HttpServlet{
 
             if (clientName.isEmpty()){
                 setResponseBodyAsPlainText(resp, "Не указано имя клиента");
+                resp.setStatus(400);
             } else {
                 var findedClients = dbServiceClient.findByField("name", clientName);
                 if (findedClients.size() != 0){
                     setResponseBodyAsPlainText(resp, "Клиент с таким именем уже существует");
+                    resp.setStatus(400);
                 } else {
                     addClient(clientName, clientAddress, clientPhone);
+                    resp.setStatus(201);
                 }
             }
         } catch (Exception e){
             setResponseBodyAsPlainText(resp, "Возникла неисправимая ошибка при заведении клиента");
+            resp.setStatus(500);
         }
-
-        resp.sendRedirect("/clients");
 
     }
 

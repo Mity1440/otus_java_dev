@@ -6,12 +6,16 @@
 <body>
 
 <h4>Добавить нового клиента</h4>
-<form action="/api/client" method="post">
+<form action="/clients" method="post">
     <p><input placeholder="Name" type="text" name="name"></p>
     <p><input placeholder="Address" type="text" name="address"></p>
     <p><input placeholder="Phone" type="text" name="phone"></p>
     <p><input type="submit" value="Create"></p>
 </form>
+
+<#if showClientAddingError>
+<h4><span style="color: darkred; ">Что то пошло не так при добавлении клиента! Попробуйте снова</span></h4>
+</#if>
 
 <h4>Все клиенты</h4>
 <table style="width: 400px">
