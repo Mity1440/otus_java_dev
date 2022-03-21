@@ -32,7 +32,7 @@ public class Client {
 
                             @Override
                             public void onNext(Digit um) {
-                                counter.incrementAndGet();
+                                counter.set(um.getValue());
                             }
 
                             @Override
