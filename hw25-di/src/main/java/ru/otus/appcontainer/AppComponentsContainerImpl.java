@@ -42,36 +42,37 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
 
     private void processConfig(Class<?> configClass) {
 
-        wrapException(()-> {
+        Object configInstance = getConfigInstance(configClass);
 
-            Constructor constructor;
-            Object configInstance;
+        Arrays.stream(configClass.getDeclaredMethods())
+                .filter(o -> o.isAnnotationPresent(AppComponent.class))
+                .sorted(Comparator.comparingInt(o -> o.getAnnotation(AppComponent.class).order()))
+                .forEach(method -> {
 
-            try {
-                constructor = configClass.getConstructor();
-                constructor.setAccessible(true);
-                configInstance = constructor.newInstance();
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(String
-                                     .format("Not found default constructor %s", configClass.getName()));
-            } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException("Error occurred during instantiation");
-            };
+                    Object appComponent = createComponent(configInstance, method);
 
-            Arrays.stream(configClass.getDeclaredMethods())
-                    .filter(o -> o.isAnnotationPresent(AppComponent.class))
-                    .sorted(Comparator.comparingInt(o -> o.getAnnotation(AppComponent.class).order()))
-                    .forEach(method -> {
+                    appComponents.add(appComponent);
+                    appComponentsByName.put(method.getAnnotation(AppComponent.class).name(), appComponent);
 
-                        Object appComponent = createComponent(configInstance, method);
+                });
 
-                        appComponents.add(appComponent);
-                        appComponentsByName.put(method.getAnnotation(AppComponent.class).name(), appComponent);
+    }
 
-                    });
+    private Object getConfigInstance(Class<?> configClass) {
 
-        });
-
+        Object configInstance;
+        try {
+            Constructor<?> constructor = configClass.getConstructor();
+            constructor.setAccessible(true);
+            configInstance = constructor.newInstance();
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(String
+                                 .format("Not found default constructor %s", configClass.getName()));
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException("Error occurred during instantiation");
+        }
+        ;
+        return configInstance;
     }
 
     private void processConfig(List<? extends Class<?>> configClasses){
@@ -90,7 +91,6 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
     private void  checkConfigClass(List<? extends Class<?>> initialConfigClasses){
 
         Set<String> existingNames = new HashSet<>();
-        Set<Class> existingBeanTypes = new HashSet<>();
 
         for (var clazz: initialConfigClasses){
 
@@ -108,13 +108,6 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
                                     "Error. There are more than one method with component name %s", componentName));
                         }
                         existingNames.add(componentName);
-
-                        var beanType = method.getReturnType();
-                        if (existingBeanTypes.contains(beanType)){
-                            throw new RuntimeException(String.format(
-                                    "Error. There are more than one bean with type %s", beanType.getName()));
-                        }
-                        existingBeanTypes.add(beanType);
 
                     });
 
@@ -146,14 +139,6 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
     //endregion
 
     //region Wrappers
-
-    private void wrapException(Runnable action) {
-        try {
-            action.run();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 
     private Object wrapException(Callable<?> action) {
         try {
