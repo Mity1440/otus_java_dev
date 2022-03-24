@@ -15,6 +15,7 @@ public class Client {
 
     private static final String SERVER_HOST = "localhost";
     private static final int SERVER_PORT = 8290;
+    private static final Object lock = new Object();
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -24,6 +25,7 @@ public class Client {
 
         var counter = new AtomicInteger();
         var latch = new CountDownLatch(1);
+
         var newStub = RemoteDBServiceGrpc.newStub(channel);
 
         newStub
@@ -32,7 +34,11 @@ public class Client {
 
                             @Override
                             public void onNext(Digit um) {
-                                counter.set(um.getValue());
+
+                                synchronized (lock) {
+                                    counter.set(um.getValue());
+                                }
+
                             }
 
                             @Override
@@ -61,14 +67,18 @@ public class Client {
 
         for (var idx = 0; idx < 50; idx++) {
 
-            var serverValue = counter.get();
-            current += (fixCounter == serverValue? 0: serverValue) + 1;
+            synchronized (lock) {
 
-            System.out.println(
-                    String.format("Server value: %d, Current: %d", serverValue, current)
-            );
+                var serverValue = counter.get();
+                current += (fixCounter == serverValue ? 0 : serverValue) + 1;
 
-            fixCounter = serverValue;
+                System.out.println(
+                        String.format("Server value: %d, Current: %d", serverValue, current)
+                );
+
+                fixCounter = serverValue;
+
+            }
 
             Thread.sleep(1000);
 
