@@ -1,4 +1,4 @@
-package ru.otus.model;
+package ru.otus.security.model;
 
 
 //Допустим, этот класс библиотечный, его нельзя менять

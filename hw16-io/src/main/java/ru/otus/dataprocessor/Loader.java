@@ -1,6 +1,6 @@
 package ru.otus.dataprocessor;
 
-import ru.otus.model.Measurement;
+import ru.otus.security.model.Measurement;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ru.otus.model;
+package ru.otus.security.model;
 
 public class Message implements Cloneable{
     private final long id;

@@ -1,16 +1,13 @@
 package ru.otus.processor.homework;
 
 import org.junit.jupiter.api.Test;
-import ru.otus.model.Message;
+import ru.otus.security.model.Message;
 import ru.otus.processor.Processor;
-import ru.otus.processor.ProcessorUpperField10;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ProcessorExceptionInEvenSecondTest {
 

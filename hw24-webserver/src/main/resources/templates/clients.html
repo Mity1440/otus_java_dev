@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Клиенты</title>
+</head>
+
+<body>
+
+<h4>Добавить нового клиента</h4>
+<form action="/clients" method="post">
+    <p><input placeholder="Name" type="text" name="name"></p>
+    <p><input placeholder="Address" type="text" name="address"></p>
+    <p><input placeholder="Phone" type="text" name="phone"></p>
+    <p><input type="submit" value="Create"></p>
+</form>
+
+<#if showClientAddingError>
+<h4><span style="color: darkred; ">Что то пошло не так при добавлении клиента! Попробуйте снова</span></h4>
+</#if>
+
+<h4>Все клиенты</h4>
+<table style="width: 400px">
+    <thead>
+        <tr>
+            <td style="width: 50px">id</td>
+            <td style="width: 150px">name</td>
+            <td style="width: 100px">address</td>
+            <td style="width: 100px">phone</td>
+        </tr>
+    </thead>
+    <tbody>
+        <#list clients as client>
+        <tr>
+            <td>${client.id}</td>
+            <td>${(client.name)!"Безымянный клиент, как он тут оказался"}</td>
+            <td>${(client.address.getStreet())!"Адрес не задан, непорядок, нужно наказать менеджера, жестко наказать"}</td>
+            <td>${(client.getPhonesInString())!"Куда звонить? Зачем нам клиент без телефона?"}</td>
+        </tr>
+        </#list>
+    </tbody>
+</table>
+</body>
+</html>
