@@ -1,5 +1,6 @@
 package ru.otus.crm.service;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.base.AbstractHibernateTest;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 @DisplayName("Демо работы с hibernate (с абстракциями) должно ")
 class DbServiceClientTest extends AbstractHibernateTest {
 
