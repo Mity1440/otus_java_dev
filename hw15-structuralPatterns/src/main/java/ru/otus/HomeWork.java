@@ -1,16 +1,12 @@
 package ru.otus;
 
 import ru.otus.handler.ComplexProcessor;
-import ru.otus.listener.ListenerPrinterConsole;
 import ru.otus.listener.homework.HistoryListener;
-import ru.otus.model.Message;
-import ru.otus.processor.LoggerProcessor;
-import ru.otus.processor.ProcessorConcatFields;
+import ru.otus.security.model.Message;
 import ru.otus.processor.ProcessorUpperField10;
 import ru.otus.processor.homework.ProcessorExceptionInEvenSecond;
 import ru.otus.processor.homework.ProcessorSwapField11AndField12;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 

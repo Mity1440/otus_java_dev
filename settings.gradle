@@ -18,6 +18,9 @@ include 'hw15-structuralPatterns'
 include 'hw16-io'
 include 'hw18-JDBC'
 include 'hw21-jpql'
+
+include 'hw24-webserver'
+
 include 'hw28-springDataJDBC'
 include 'hw31-executors'
 include 'hw32-concurrentCollections'

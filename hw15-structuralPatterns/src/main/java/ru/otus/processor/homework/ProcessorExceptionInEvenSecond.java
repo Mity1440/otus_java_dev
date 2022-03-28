@@ -1,6 +1,6 @@
 package ru.otus.processor.homework;
 
-import ru.otus.model.Message;
+import ru.otus.security.model.Message;
 import ru.otus.processor.Processor;
 
 import java.time.LocalTime;
