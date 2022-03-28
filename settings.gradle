@@ -18,6 +18,7 @@ include 'hw15-structuralPatterns'
 include 'hw16-io'
 include 'hw18-JDBC'
 include 'hw21-jpql'
+include 'hw25-di'
 
 include 'hw24-webserver'
 
