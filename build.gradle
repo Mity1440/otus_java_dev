@@ -28,7 +28,7 @@ allprojects {
     dependencyManagement {
         dependencies {
             imports {
-                mavenBom("org.springframework.boot:spring-boot-dependencies:2.5.2")
+                mavenBom("org.springframework.boot:spring-boot-dependencies:2.6.3")
             }
             dependency("org.ow2.asm:asm-commons:${Versions.asm}")
             dependency("com.google.guava:guava:${Versions.guava}")
@@ -40,9 +40,7 @@ allprojects {
             dependency("com.google.protobuf:protobuf-java-util:${Versions.protobuf}")
             dependency("org.testcontainers:junit-jupiter:${Versions.testcontainers}")
             dependency("org.testcontainers:postgresql:${Versions.testcontainers}")
-
             dependency("com.google.code.findbugs:jsr305:${Versions.jsr305}")
-
             dependency("io.grpc:grpc-netty:${Versions.grpc}")
             dependency("io.grpc:grpc-protobuf:${Versions.grpc}")
             dependency("io.grpc:grpc-stub:${Versions.grpc}")

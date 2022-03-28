@@ -6,7 +6,6 @@ public interface Versions {
     String glassfishJson = "1.1.4";
     String protobuf = "3.19.1";
     String testcontainers = "1.15.3";
-
     String reflections = "0.10.2";
 
     String sockjs = "1.5.1";
